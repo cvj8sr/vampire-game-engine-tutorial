@@ -1,0 +1,118 @@
+[gd_scene load_steps=13 format=3 uid="uid://dm0m4bg44kyae"]
+
+[ext_resource type="Script" path="res://Scripts/blood.gd" id="1_y8vgw"]
+[ext_resource type="Texture2D" uid="uid://b0781fijikg3s" path="res://Assets/blood1.png" id="2_rf6wl"]
+[ext_resource type="Texture2D" uid="uid://cnnch127bm8oc" path="res://Assets/blood2.png" id="3_np1ko"]
+[ext_resource type="Texture2D" uid="uid://b0bs8vinf0gac" path="res://Assets/blood3.png" id="4_q3jhc"]
+[ext_resource type="Texture2D" uid="uid://bic36u61gng5r" path="res://Assets/blood4.png" id="5_msoxb"]
+[ext_resource type="Texture2D" uid="uid://dwg6srexhpmnx" path="res://Assets/blood5.png" id="6_hdxuc"]
+[ext_resource type="AudioStream" uid="uid://btjmx3dyhhrti" path="res://Assets/sounds/pickupCoin.wav" id="7_cocyy"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ka0et"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_rf6wl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_np1ko")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_q3jhc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_msoxb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_hdxuc")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_7wbab"]
+radius = 6.0
+
+[sub_resource type="Animation" id="Animation_8ixcq"]
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CollisionShape2D:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_cimvd"]
+resource_name = "pickup"
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CollisionShape2D:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_63b7l"]
+_data = {
+"RESET": SubResource("Animation_8ixcq"),
+"pickup": SubResource("Animation_cimvd")
+}
+
+[node name="Blood" type="Area2D"]
+script = ExtResource("1_y8vgw")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_ka0et")
+autoplay = "default"
+frame_progress = 0.914633
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_7wbab")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_63b7l")
+}
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_cocyy")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

@@ -1,0 +1,61 @@
+[gd_scene load_steps=9 format=3 uid="uid://cvkub45hbilk4"]
+
+[ext_resource type="Script" path="res://Scripts/player.gd" id="1_ymmyq"]
+[ext_resource type="Texture2D" uid="uid://dyv4xsapiyc4u" path="res://Assets/Vampire.png" id="2_kvenn"]
+[ext_resource type="Texture2D" uid="uid://b4qd34e8jdx3i" path="res://Assets/Vampire_run1.png" id="3_7tdlo"]
+[ext_resource type="Texture2D" uid="uid://owreu88doukg" path="res://Assets/vampire_jump.png" id="3_jxaxa"]
+[ext_resource type="Texture2D" uid="uid://d21mniga53b5c" path="res://Assets/Vampire_run2.png" id="4_64qdr"]
+[ext_resource type="AudioStream" uid="uid://dedlpfnsfpd1g" path="res://Assets/sounds/jump.wav" id="6_uinaj"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_jc384"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_kvenn")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_jxaxa")
+}],
+"loop": true,
+"name": &"jump",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_7tdlo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_64qdr")
+}],
+"loop": true,
+"name": &"run",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_h57mk"]
+radius = 4.0
+height = 16.0
+
+[node name="Player" type="CharacterBody2D"]
+script = ExtResource("1_ymmyq")
+
+[node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_jc384")
+animation = &"idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_h57mk")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_uinaj")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.25
+one_shot = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
